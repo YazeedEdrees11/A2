@@ -11,9 +11,11 @@
         :root {
             --primary-color: #2B337B; 
             --secondary-color: #4F79B5; 
+            --accent-color: #c5a47e; 
             --light-bg: #f4f7fa;
             --text-color: #333;
             --white: #ffffff;
+            --shadow: 0 10px 30px rgba(43, 51, 123, 0.15);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,36 +25,22 @@
             background-color: var(--white);
             color: var(--text-color);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* --- Header --- */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 5%;
+            padding: 15px 5%;
             position: absolute;
             width: 100%;
             z-index: 100;
             background: linear-gradient(to bottom, rgba(43, 51, 123, 0.8), transparent);
         }
 
-        .logo img { 
-            max-height: 100px; /* زيادة حجم اللوجو الجديد ليكون واضحاً */
-            display: block;
-        }
+        .logo img { max-height: 70px; display: block; }
 
-        .btn-lang {
-            background: transparent;
-            border: 1px solid var(--white);
-            color: var(--white);
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-family: inherit;
-        }
-
-        /* --- Hero Section --- */
         .hero {
             height: 100vh;
             background: url('1000082839.webp') center/cover no-repeat;
@@ -68,25 +56,17 @@
             background: linear-gradient(45deg, rgba(43, 51, 123, 0.75), rgba(79, 121, 181, 0.5));
         }
 
-        .hero-content { 
-            position: relative; 
-            z-index: 2; 
-            text-align: center; 
-            color: var(--white); 
-            max-width: 850px; 
-            padding: 20px; 
-        }
-
-        /* --- Chat Interface --- */
-        .chat-container {
+        .hero-content { position: relative; z-index: 2; text-align: center; color: var(--white); max-width: 850px; padding: 20px; }
+        
+        .chat-preview {
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(15px);
             padding: 20px;
             border-radius: 24px;
             border: 1px solid rgba(255,255,255,0.3);
-            margin-top: 20px;
+            margin-top: 30px;
             width: 100%;
-            max-width: 550px;
+            max-width: 600px;
             display: flex;
             flex-direction: column;
             box-shadow: 0 20px 50px rgba(0,0,0,0.2);
@@ -108,50 +88,57 @@
             max-width: 85%;
             font-size: 0.95rem;
             text-align: right;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
             animation: fadeIn 0.3s ease;
         }
 
-        .assistant-bubble { background: var(--white); color: var(--primary-color); align-self: flex-start; }
-        .user-bubble { background: var(--secondary-color); color: white; align-self: flex-end; border-radius: 18px 18px 18px 4px; }
-
-        .typing { font-size: 0.8rem; color: #ddd; margin-bottom: 5px; display: none; text-align: right; }
-
-        .chat-input-area { display: flex; gap: 10px; }
-        .chat-input-area input { flex: 1; padding: 12px 18px; border-radius: 12px; border: none; outline: none; }
-        .chat-input-area button {
-            background: var(--secondary-color);
-            color: white; border: none; width: 48px; border-radius: 12px; cursor: pointer;
+        .assistant-bubble {
+            background: var(--white);
+            color: var(--primary-color);
+            align-self: flex-start;
         }
+
+        .user-bubble {
+            background: var(--secondary-color);
+            color: white;
+            align-self: flex-end;
+            border-radius: 18px 18px 18px 4px;
+        }
+
+        .typing { font-style: italic; font-size: 0.8rem; color: #eee; margin-bottom: 5px; display: none; }
+
+        .chat-input { display: flex; gap: 10px; }
+        .chat-input input { flex: 1; padding: 12px 18px; border-radius: 12px; border: none; outline: none; font-family: 'Tajawal'; }
+        .chat-input button {
+            background: var(--secondary-color);
+            color: white; border: none; width: 48px; border-radius: 12px; cursor: pointer; transition: 0.3s;
+        }
+        .chat-input button:hover { background: var(--primary-color); }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 600px) {
-            .hero h1 { font-size: 1.8rem; }
-            .logo img { max-height: 80px; }
-        }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">
-            <img src="1000082837.png" alt="Ayass Hotel New Logo">
+        <div class="logo"><img src="1000082837.png" alt="Ayass Hotel Logo"></div>
+        <div class="header-actions">
+            <button class="btn btn-primary" style="background:var(--secondary-color); color:white; padding:10px 20px; border-radius:8px; border:none;">English</button>
         </div>
-        <button class="btn-lang">English</button>
     </header>
 
     <section class="hero">
         <div class="hero-content">
-            <h1 style="font-size: 2.8rem; margin-bottom: 10px; font-weight: 900;">المساعد الذكي لفندق إياس</h1>
-            <p style="font-size: 1.2rem; opacity: 0.9;">نحن هنا لنجعل إقامتك أكثر راحة وسهولة</p>
+            <h1 style="font-size: 2.5rem; margin-bottom: 10px;">المساعد الذكي لفندق إياس</h1>
+            <p style="margin-bottom: 25px;">تجربة ضيافة رقمية مدعومة بالذكاء الاصطناعي</p>
             
-            <div class="chat-container">
+            <div class="chat-preview">
                 <div id="chat-messages">
-                    <div class="chat-bubble assistant-bubble">مرحباً بك في فندق إياس 👋 كيف يمكنني مساعدتك اليوم؟</div>
+                    <div class="chat-bubble assistant-bubble">أهلاً بك في فندق إياس 👋 كيف يمكنني مساعدتك اليوم؟</div>
                 </div>
-                <div id="typing-indicator" class="typing">جاري معالجة طلبك...</div>
-                <div class="chat-input-area">
-                    <input type="text" id="user-input" placeholder="اكتب استفسارك هنا..." autocomplete="off">
+                <div id="typing-indicator" class="typing">المساعد يكتب الآن...</div>
+                <div class="chat-input">
+                    <input type="text" id="user-input" placeholder="اكتب رسالتك هنا..." autocomplete="off">
                     <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
                 </div>
             </div>
@@ -179,6 +166,8 @@
 
             addBubble(message, true);
             input.value = '';
+            
+            // إظهار مؤشر الكتابة
             typingIndicator.style.display = 'block';
 
             try {
@@ -190,14 +179,15 @@
 
                 if (response.ok) {
                     const data = await response.json();
-                    // استخراج الرد من الـ Webhook
-                    const reply = data.output || data.message || data[0]?.output || "شكراً لتواصلك معنا، تم استلام رسالتك.";
+                    // بافتراض أن n8n يعيد الرد في حقل اسمه output أو نص مباشر
+                    const reply = data.output || data.message || "تم استلام طلبك، سأقوم بمعالجته فوراً.";
                     addBubble(reply, false);
                 } else {
-                    addBubble("عذراً، واجهت مشكلة في الاتصال. يرجى المحاولة ثانية.", false);
+                    addBubble("عذراً، حدث خطأ في الاتصال بالمساعد. يرجى المحاولة لاحقاً.", false);
                 }
             } catch (error) {
-                addBubble("نعتذر، المساعد غير متصل حالياً.", false);
+                console.error('Webhook Error:', error);
+                addBubble("نواجه مشكلة التقنية حالياً، يرجى التواصل مع الاستقبال مباشرة.", false);
             } finally {
                 typingIndicator.style.display = 'none';
             }
