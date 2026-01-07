@@ -10,12 +10,10 @@
 
     <style>
         :root {
-            --primary-color: #1a2b48;
-            --accent-color: #c5a47e;
-            --light-bg: #f9f9f9;
-            --text-color: #333;
+            --primary-color: #2B337B;   /* Deep Royal Blue */
+            --accent-color: #4F79B5;    /* Soft Modern Blue */
             --white: #ffffff;
-            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --text-color: #333;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,52 +25,14 @@
         }
 
         header {
+            position: absolute;
+            width: 100%;
+            padding: 20px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 5%;
-            position: absolute;
-            width: 100%;
+            color: white;
             z-index: 100;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: white;
-            display: flex;
-            gap: 10px;
-        }
-
-        nav ul {
-            display: flex;
-            gap: 30px;
-            list-style: none;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-        }
-
-        .btn {
-            padding: 10px 25px;
-            border-radius: 50px;
-            border: none;
-            cursor: pointer;
-            font-weight: 700;
-        }
-
-        .btn-primary {
-            background: var(--accent-color);
-            color: white;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid white;
-            color: white;
         }
 
         .hero {
@@ -80,15 +40,15 @@
             background: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80') center/cover;
             position: relative;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
         }
 
         .hero::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: rgba(26,43,72,0.6);
+            background: rgba(43, 51, 123, 0.65); /* primary-color overlay */
         }
 
         .hero-content {
@@ -99,12 +59,12 @@
         }
 
         .chat-preview {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(12px);
             padding: 20px;
             border-radius: 20px;
             max-width: 600px;
-            margin: 30px auto 0;
+            margin-top: 30px;
         }
 
         .chat-messages {
@@ -121,6 +81,7 @@
             border-radius: 20px;
             max-width: 80%;
             font-size: 0.95rem;
+            line-height: 1.5;
         }
 
         .chat-bubble.bot {
@@ -144,7 +105,7 @@
 
         .chat-input input {
             flex: 1;
-            padding: 12px;
+            padding: 12px 15px;
             border-radius: 50px;
             border: none;
             outline: none;
@@ -158,6 +119,11 @@
             background: var(--accent-color);
             color: white;
             cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .chat-input button:hover {
+            background: var(--primary-color);
         }
 
         footer {
@@ -168,7 +134,6 @@
         }
 
         @media (max-width: 768px) {
-            nav ul { display: none; }
             .hero-content h1 { font-size: 2rem; }
         }
     </style>
@@ -177,20 +142,7 @@
 <body>
 
 <header>
-    <div class="logo">
-        <i class="fas fa-concierge-bell"></i> AYASS ASSISTANT
-    </div>
-    <nav>
-        <ul>
-            <li><a href="#">الرئيسية</a></li>
-            <li><a href="#">المميزات</a></li>
-            <li><a href="#">الحجز</a></li>
-        </ul>
-    </nav>
-    <div>
-        <button class="btn btn-outline">English</button>
-        <button class="btn btn-primary">ابدأ المحادثة</button>
-    </div>
+    <strong>AYASS ASSISTANT</strong>
 </header>
 
 <section class="hero">
@@ -220,6 +172,7 @@
 </footer>
 
 <script>
+const sessionId = crypto.randomUUID();
 const webhookURL = "https://n8n.devorise.com/webhook/59c075a9-ba76-47eb-998a-91b913245676";
 
 const sendBtn = document.getElementById("sendBtn");
@@ -228,7 +181,7 @@ const chatMessages = document.getElementById("chatMessages");
 
 function addMessage(text, sender) {
     const bubble = document.createElement("div");
-    bubble.className = "chat-bubble " + sender;
+    bubble.className = `chat-bubble ${sender}`;
     bubble.textContent = text;
     chatMessages.appendChild(bubble);
     chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -246,7 +199,8 @@ async function sendMessage() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                message: message,
+                sessionId,
+                message,
                 source: "ayass-website",
                 language: "ar"
             })
@@ -255,9 +209,8 @@ async function sendMessage() {
         const data = await res.json();
         addMessage(data.reply || "لم يتم استلام رد", "bot");
 
-    } catch (err) {
-        addMessage("⚠️ خطأ في الاتصال بالخادم", "bot");
-        console.error(err);
+    } catch {
+        addMessage("⚠️ تعذر الاتصال بالخادم", "bot");
     }
 }
 
